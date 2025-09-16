@@ -51,7 +51,7 @@ const LoginForm = () => {
                         ?
                             <div>
                                 <div className="input-group-me">
-                                    <label htmlFor="phone">Telifon raqam:</label>
+                                    <label htmlFor="phone">Telefon raqam:</label>
                                     <input
                                         type="text"
                                         id="phone"

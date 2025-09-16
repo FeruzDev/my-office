@@ -118,7 +118,8 @@ const Report = () => {
                                     <td>{item?.first_entry?.time?.slice(11, 16)}</td>
                                     <td>{item?.last_exit?.time?.slice(11, 16)}</td>
                                     <td className="text-center">{item?.hours_worked}</td>
-                                    <td className="text-center"><button className="btn bg-transparent" onClick={() => {
+                                    <td className="text-center">
+                                        <button className="btn bg-transparent" onClick={() => {
                                         setisModalOpen(true)
                                         setDataCoor(item?.first_entry?.location)
                                     }}>

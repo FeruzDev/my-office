@@ -1,18 +1,45 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Table} from "antd";
 import {BarsOutlined, CarOutlined, CoffeeOutlined, EnvironmentOutlined, UserSwitchOutlined} from "@ant-design/icons";
 import {useHistory} from "react-router-dom";
+import axios from "axios";
+import {API_PATH} from "../../tools/constants";
+import GeoModal from "../../components/GeoModal";
 
 const Main = () => {
     let history = useHistory();
+    const d = new Date();
+    const [dataCoor, setDataCoor] = useState(null);
+
+    const [data, setData] = useState({});
+    const [dataAt, setDataAt] = useState([]);
+    const [isModalOpen, setisModalOpen] = useState(false);
+
+
+    const [currentMonth, setCurrentMonth] = useState( d.getMonth() + 1);
+    const [currentYear, setCurrentYear] = useState(d.getFullYear());
+
+    useEffect(() => {
+        axios.post(API_PATH + "api/worker-attendance/", {
+            'organization_id': localStorage.getItem("orgId"),
+            'worker_id': localStorage.getItem("empid"),
+            'year': currentYear,
+            'month': currentMonth,
+            'token': localStorage.getItem("token")
+        },{headers: {"Authorization": "Bearer " + localStorage.getItem("token")}})
+            .then(res => {
+                setData(res.data);
+                setDataAt(res.data?.attendance);
+            })
+    }, [])
     return (
         <div className="main-page">
 
             <div className="main-page-header d-flex align-items-center justify-content-space-between w-100">
 
                <div>
-                   <h2>Jalilov Feruz</h2>
-                   <h4>Burgut soft</h4>
+                   <h2>{data?.worker?.first_name + " " +  data?.worker?.last_name}</h2>
+                   <h4>{localStorage?.getItem("org")}</h4>
                </div>
                 <div style={{ marginLeft: "auto"}}>
                     <button onClick={() => {
@@ -35,11 +62,21 @@ const Main = () => {
                     </tr>
                     </thead>
                     <tbody>
+
+
                     <tr>
-                        <th scope="row">08:20</th>
-                        <td>09:00</td>
-                        <td>18:00</td>
-                        <td className="text-center"><EnvironmentOutlined /></td>
+                        <th>  {dataAt && dataAt[dataAt?.length - 1]?.hours_worked }</th>
+
+                        <td>  {dataAt && dataAt[dataAt?.length - 1]?.first_entry?.time?.slice(11-16)   }</td>
+                        <td>  {dataAt && dataAt[dataAt?.length - 1]?.last_exit?.time?.slice(11-16)   }</td>
+
+                        <td className="text-center">
+                            <button className="btn bg-transparent" onClick={() => {
+                                setisModalOpen(true)
+                            }}>
+                                <EnvironmentOutlined />
+
+                            </button></td>
                     </tr>
                     </tbody>
                 </table>
@@ -88,6 +125,8 @@ const Main = () => {
                     </div>
                 </div>
             </div>
+            <GeoModal isModalOpen={isModalOpen} lat={41.305424916078096} lot={69.32604501931374} setisModalOpen={setisModalOpen}></GeoModal>
+
         </div>
     );
 };
