@@ -30,7 +30,7 @@ const Drinks = () => {
                    {/*</div>*/}
                    <div className="col-6">
                        <button onClick={() => history.push("/main/drinks/cofe")}>
-                           <img className="w-50" src="/img/img.png" alt="..."/>
+                           <img style={{width: "64px"}} src="/img/img.png" alt="..."/>
                            <span> Cofe</span>
                        </button>
                    </div>
@@ -38,6 +38,12 @@ const Drinks = () => {
                        <button onClick={() => history.push("/main/drinks/kitchen-report")}>
                            <img src="/img/report.png" alt="..."/>
                            <span>Oshxona hisoboti</span>
+                       </button>
+                   </div>
+                   <div className="col-6 mt-3">
+                       <button onClick={() => history.push("/main/drinks/catering")}>
+                           <img src="/img/icon/food.png" alt="..."/>
+                           <span>Buyurtma berish</span>
                        </button>
                    </div>
                </div>
